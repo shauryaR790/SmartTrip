@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>AR Navigation</title>
+  <title>VR Preview</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -10,7 +10,6 @@
 
   <div class="logo">SmartTrip</div>
 
-  <!-- HAMBURGER (mobile) -->
   <div class="menu-toggle" onclick="toggleMenu()">☰</div>
 
   <nav class="nav-links" id="navLinks">
@@ -27,67 +26,71 @@
 
 <section class="container">
 
-  <!-- HEADER -->
   <div class="page-header">
-    <h1>Augmented Reality Navigation</h1>
-    <p>Navigate airports and cities with real-time overlays</p>
+    <h1>Virtual Destination Preview</h1>
+    <p>Explore your destination before booking</p>
   </div>
 
-  <!-- FEATURES -->
   <div class="grid-3">
 
     <div class="card">
-      <h3>Airport Navigation</h3>
-      <p>Find gates, lounges, and exits instantly</p>
-      <button>Start AR</button>
+      <h3>Paris</h3>
+      <p>360° Eiffel Tower experience</p>
+      <button onclick="openEarth(48.8584, 2.2945)">Launch VR</button>
     </div>
 
     <div class="card">
-      <h3>City Directions</h3>
-      <p>Overlay directions on real streets</p>
-      <button>Start AR</button>
+      <h3>Dubai</h3>
+      <p>Burj Khalifa sky view</p>
+      <button onclick="openEarth( 25.1972 , 55.2744)">Launch VR</button>
     </div>
 
     <div class="card">
-      <h3>Hotel Finder</h3>
-      <p>Locate nearby hotels visually</p>
-      <button>Start AR</button>
+      <h3>Maldives</h3>
+      <p>Beach & resort walkthrough</p>
+      <button onclick="openEarth(3.2913, 73.3215)">Launch VR</button>
     </div>
 
   </div>
 
-  <!-- HOW IT WORKS -->
   <div class="info-section">
-    <h2>How it works</h2>
+    <h2>What you can explore</h2>
 
     <div class="grid-3">
       <div class="info-card">
-        <h4>Camera Integration</h4>
-        <p>Uses your phone camera to overlay directions.</p>
+        <h4>360° Views</h4>
+        <p>Look around destinations in full immersive detail.</p>
       </div>
 
       <div class="info-card">
-        <h4>GPS Tracking</h4>
-        <p>Accurate real-time positioning and navigation.</p>
+        <h4>Hotel Walkthroughs</h4>
+        <p>Preview rooms, lobbies, and amenities before booking.</p>
       </div>
 
       <div class="info-card">
-        <h4>Live Data</h4>
-        <p>Shows gates, routes, and places instantly.</p>
+        <h4>Local Attractions</h4>
+        <p>Experience landmarks and nearby attractions virtually.</p>
       </div>
     </div>
   </div>
 
-  <!-- BENEFITS -->
   <div class="info-section">
-    <h2>Why use AR?</h2>
+    <h2>Why VR?</h2>
     <p>
-      AR makes navigation faster, easier, and more intuitive by overlaying useful
-      information directly onto your surroundings.
+      VR lets users preview destinations, increasing booking confidence and reducing uncertainty.
+      This feature improves conversion rates and enhances user engagement.
     </p>
   </div>
 
 </section>
+
+<!-- ✅ REQUIRED SCRIPT -->
+<script>
+function openEarth(lat, lng){
+  const url = `https://earth.google.com/web/@${lat},${lng},8500a`;
+  window.open(url, "_blank");
+}
+</script>
 
 </body>
 </html>
