@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Planner</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="navbar">
+
+  <div class="logo">SmartTrip</div>
+
+  <!-- HAMBURGER (mobile) -->
+  <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+
+  <nav class="nav-links" id="navLinks">
+    <a href="index.html">Home</a>
+    <a href="planner.html">Planner</a>
+    <a href="booking.html">Flights</a>
+    <a href="hotels.html">Hotels</a>
+    <a href="vr.html">VR</a>
+    <a href="ar.html">AR</a>
+    <a href="summary.html">Summary</a>
+  </nav>
+
+</header>
+
+<section class="planner-container">
+
+  <!-- HEADER -->
+  <div class="planner-header">
+    <h1>Plan Your Trip</h1>
+    <p>Build your journey step by step — flights, hotels, and experiences.</p>
+  </div>
+
+  <!-- STEPS -->
+  <div class="planner-grid">
+
+    <div class="planner-card">
+      <h3>Step 1: Flights</h3>
+      <p>Select your departure and destination flights.</p>
+      <button onclick="goTo('booking.html')">Choose Flights</button>
+    </div>
+
+    <div class="planner-card">
+      <h3>Step 2: Hotels</h3>
+      <p>Find best hotels near your destination.</p>
+      <button onclick="goTo('hotels.html')">Browse Hotels</button>
+    </div>
+
+    <div class="planner-card">
+      <h3>Step 3: Experiences</h3>
+      <p>Add tours, activities and local experiences.</p>
+      <button>Coming Soon</button>
+    </div>
+
+  </div>
+
+  <!-- DIVIDER -->
+  <div class="divider"></div>
+
+  <!-- SUGGESTED -->
+  <div class="planner-header">
+    <h2>Suggested Plans</h2>
+  </div>
+
+  <div class="planner-grid">
+
+    <div class="planner-card">
+      <h3>Budget Trip</h3>
+      <p>Low-cost flights + affordable stays</p>
+    </div>
+
+    <div class="planner-card">
+      <h3>Luxury Trip</h3>
+      <p>Premium flights + 5-star hotels</p>
+    </div>
+
+    <div class="planner-card">
+      <h3>Adventure</h3>
+      <p>Activities, trekking, outdoor experiences</p>
+    </div>
+
+  </div>
+
+</section>
+
+<script src="js/app.js"></script>
+</body>
+</html>

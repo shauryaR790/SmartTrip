@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Trip Summary</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body onload="loadSummary()">
+
+<header class="navbar">
+
+  <div class="logo">SmartTrip</div>
+
+  <!-- HAMBURGER (mobile) -->
+  <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+
+  <nav class="nav-links" id="navLinks">
+    <a href="index.html">Home</a>
+    <a href="planner.html">Planner</a>
+    <a href="booking.html">Flights</a>
+    <a href="hotels.html">Hotels</a>
+    <a href="vr.html">VR</a>
+    <a href="ar.html">AR</a>
+    <a href="summary.html">Summary</a>
+  </nav>
+
+</header>
+
+<section class="summary-container">
+
+  <h1>Your Trip Summary</h1>
+
+  <!-- MAIN GRID -->
+  <div class="summary-grid">
+
+    <!-- LEFT SIDE -->
+    <div class="summary-left">
+
+      <div class="summary-card" id="tripBox"></div>
+
+      <div class="summary-card" id="flightBox"></div>
+      <div class="summary-card" id="hotelBox"></div>
+      <div class="summary-card" id="totalBox"></div>
+
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <div class="summary-right">
+
+      <div class="summary-card highlight">
+        <h3>Trip Status</h3>
+        <p>Ready to confirm</p>
+      </div>
+
+      <div class="summary-card">
+        <h3>Next Steps</h3>
+        <ul>
+          <li>Review your details</li>
+          <li>Confirm payment</li>
+          <li>Receive ticket</li>
+        </ul>
+      </div>
+
+      <a href="index.html">
+  <button class="primary-btn">Book Another Trip</button>
+</a>
+
+    </div>
+
+  </div>
+
+</section>
+
+<script>
+function loadSummary(){
+
+  const trip = JSON.parse(localStorage.getItem("trip"));
+  const flight = localStorage.getItem("flight");
+  const hotel = localStorage.getItem("hotel");
+
+  let total = 0;
+
+  /* =========================
+     TRIP DETAILS
+  ========================= */
+  if(trip){
+    document.getElementById("tripBox").innerHTML = `
+      <h3>Trip Details</h3>
+      <p><b>From:</b> ${trip.from}</p>
+      <p><b>To:</b> ${trip.to}</p>
+      <p><b>Date:</b> ${trip.depart}</p>
+      <p><b>Travelers:</b> ${trip.travelers}</p>
+    `;
+  }
+
+  /* =========================
+     FLIGHT
+  ========================= */
+  if(flight){
+    document.getElementById("flightBox").innerHTML = `
+      <h3>Selected Flight</h3>
+      <p>${flight}</p>
+    `;
+
+    // extract price
+    const fPrice = parseInt(flight.replace(/[^0-9]/g, ""));
+    total += fPrice;
+  } else {
+    document.getElementById("flightBox").innerHTML = `
+      <h3>Selected Flight</h3>
+      <p>No flight selected</p>
+    `;
+  }
+
+  /* =========================
+     HOTEL
+  ========================= */
+  if(hotel){
+    document.getElementById("hotelBox").innerHTML = `
+      <h3>Selected Hotel</h3>
+      <p>${hotel}</p>
+    `;
+
+    const hPrice = parseInt(hotel.replace(/[^0-9]/g, ""));
+    total += hPrice;
+  } else {
+    document.getElementById("hotelBox").innerHTML = `
+      <h3>Selected Hotel</h3>
+      <p>No hotel selected</p>
+    `;
+  }
+
+  /* =========================
+     TOTAL
+  ========================= */
+  document.getElementById("totalBox").innerHTML = `
+    <h3>Total Cost</h3>
+    <p><b>₹${total}</b></p>
+  `;
+
+ function goTo(page){
+  window.location.href = page;
+}
+}
+</script>
+
+</body>
+</html>

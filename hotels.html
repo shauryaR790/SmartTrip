@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Hotels</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="navbar">
+  <div class="logo">SmartTrip</div>
+
+  <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+
+  <nav class="nav-links" id="navLinks">
+    <a href="index.html">Home</a>
+    <a href="planner.html">Planner</a>
+    <a href="booking.html">Flights</a>
+    <a href="hotels.html">Hotels</a>
+    <a href="vr.html">VR</a>
+    <a href="ar.html">AR</a>
+    <a href="summary.html">Summary</a>
+  </nav>
+</header>
+
+<section class="booking-container">
+
+  <h1>Available Hotels</h1>
+  <p class="sub">Find and compare the best stays</p>
+
+  <div class="booking-layout">
+
+    <!-- FILTERS -->
+    <div class="filters">
+
+      <h3>Filters</h3>
+
+      <div class="filter-box">
+        <p><b>Max Price: ₹<span id="hotelPriceValue">10000</span></b></p>
+        <input type="range" id="hotelPriceRange" min="2000" max="20000" value="10000">
+      </div>
+
+      <div class="filter-box">
+        <p><b>Rating</b></p>
+        <label><input type="checkbox" class="rating" value="5"> 5 Star</label><br>
+        <label><input type="checkbox" class="rating" value="4"> 4 Star+</label><br>
+        <label><input type="checkbox" class="rating" value="3"> 3 Star+</label>
+      </div>
+
+      <div class="filter-box">
+        <p><b>Amenities</b></p>
+        <label><input type="checkbox" class="amenity" value="wifi"> Free WiFi</label><br>
+        <label><input type="checkbox" class="amenity" value="pool"> Pool</label><br>
+        <label><input type="checkbox" class="amenity" value="breakfast"> Breakfast</label>
+      </div>
+
+    </div>
+
+    <!-- RESULTS -->
+    <div style="width:100%;">
+      <input type="text" id="hotelSearch" placeholder="Search hotel..." class="search-input">
+      <div class="results" id="hotelsContainer"></div>
+    </div>
+
+  </div>
+
+</section>
+
+<script>
+
+// SELECT HOTEL
+function selectHotel(hotel){
+  localStorage.setItem("hotel", hotel);
+  window.location.href = "summary.html";
+}
+
+// LOAD
+document.addEventListener("DOMContentLoaded", () => {
+
+  const trip = JSON.parse(localStorage.getItem("trip"));
+  const container = document.getElementById("hotelsContainer");
+
+  const hotels = [
+    "Hotel Sunshine","Grand Palace","Budget Inn","Luxury Suites",
+    "Ocean View","Royal Stay","City Lodge","Elite Residency",
+    "Comfort Rooms","Skyline Hotel"
+  ];
+
+  container.innerHTML = hotels.map(name => {
+
+    const price = Math.floor(Math.random() * 8000 + 2000);
+    const rating = Math.floor(Math.random() * 3 + 3);
+
+    const amenities = ["wifi","pool","breakfast"]
+      .filter(() => Math.random() > 0.5);
+
+    return `
+      <div class="hotel-card"
+        data-price="${price}"
+        data-rating="${rating}"
+        data-amenities="${amenities.join(",")}"
+        data-name="${name.toLowerCase()}">
+
+        <div>
+          <h3>${name}</h3>
+          <p>${trip.to} • ${rating} Star</p>
+          <span>${amenities.join(" • ")}</span>
+        </div>
+
+        <div>
+          <h2>₹${price}</h2>
+          <button onclick="selectHotel('${name} ₹${price}')">
+            Select
+          </button>
+        </div>
+
+      </div>
+    `;
+  }).join("");
+
+  initFilters();
+});
+
+// 🔥 COMBINED FILTER + SEARCH
+function initFilters(){
+
+  const priceRange = document.getElementById("hotelPriceRange");
+  const priceValue = document.getElementById("hotelPriceValue");
+  const searchInput = document.getElementById("hotelSearch");
+
+  priceRange.addEventListener("input", () => {
+    priceValue.innerText = priceRange.value;
+    applyFilters();
+  });
+
+  document.querySelectorAll(".rating")
+    .forEach(cb => cb.addEventListener("change", applyFilters));
+
+  document.querySelectorAll(".amenity")
+    .forEach(cb => cb.addEventListener("change", applyFilters));
+
+  searchInput.addEventListener("input", applyFilters);
+}
+
+// 🔥 MAIN LOGIC
+function applyFilters(){
+
+  const maxPrice = parseInt(document.getElementById("hotelPriceRange").value);
+  const search = document.getElementById("hotelSearch").value.toLowerCase();
+
+  const selectedRatings = Array.from(document.querySelectorAll(".rating"))
+    .filter(cb => cb.checked)
+    .map(cb => parseInt(cb.value));
+
+  const selectedAmenities = Array.from(document.querySelectorAll(".amenity"))
+    .filter(cb => cb.checked)
+    .map(cb => cb.value);
+
+  document.querySelectorAll(".hotel-card").forEach(card => {
+
+    const price = parseInt(card.dataset.price);
+    const rating = parseInt(card.dataset.rating);
+    const amenities = card.dataset.amenities.split(",");
+    const name = card.dataset.name;
+
+    let show = true;
+
+    if(price > maxPrice) show = false;
+
+    if(selectedRatings.length &&
+       !selectedRatings.some(r => rating >= r)) show = false;
+
+    if(selectedAmenities.length &&
+       !selectedAmenities.every(a => amenities.includes(a))) show = false;
+
+    if(search && !name.includes(search)) show = false;
+
+    card.style.display = show ? "flex" : "none";
+  });
+}
+
+</script>
+
+</body>
+</html>

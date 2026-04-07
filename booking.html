@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Booking</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="navbar">
+  <div class="logo">SmartTrip</div>
+
+  <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+
+  <nav class="nav-links" id="navLinks">
+    <a href="index.html">Home</a>
+    <a href="planner.html">Planner</a>
+    <a href="booking.html">Flights</a>
+    <a href="hotels.html">Hotels</a>
+    <a href="vr.html">VR</a>
+    <a href="ar.html">AR</a>
+    <a href="summary.html">Summary</a>
+  </nav>
+</header>
+
+<section class="booking-container">
+
+  <h1>Available Flights</h1>
+  <p class="sub">Compare and choose the best flights</p>
+
+  <div class="booking-layout">
+
+    <!-- FILTERS -->
+    <div class="filters">
+
+      <h3>Filters</h3>
+
+      <div class="filter-box">
+        <p><b>Stops</b></p>
+        <label><input type="checkbox" id="direct"> Direct</label><br>
+        <label><input type="checkbox" id="onestop"> 1 Stop</label>
+      </div>
+
+      <div class="filter-box">
+        <p><b>Max Price: ₹<span id="priceValue">8000</span></b></p>
+        <input type="range" id="priceRange" min="3000" max="10000" value="8000">
+      </div>
+
+      <div class="filter-box">
+        <p><b>Airlines</b></p>
+        <label><input type="checkbox" class="airline" value="indigo"> IndiGo</label><br>
+        <label><input type="checkbox" class="airline" value="air india"> Air India</label><br>
+        <label><input type="checkbox" class="airline" value="vistara"> Vistara</label><br>
+        <label><input type="checkbox" class="airline" value="spicejet"> SpiceJet</label><br>
+        <label><input type="checkbox" class="airline" value="akasa"> Akasa</label>
+      </div>
+
+    </div>
+
+    <!-- RESULTS -->
+    <div style="width:100%;">
+      <input type="text" id="flightSearch" placeholder="Search airline..." class="search-input">
+      <div class="results" id="flightsContainer"></div>
+    </div>
+
+  </div>
+
+</section>
+
+<script>
+
+// SELECT
+function selectFlight(flight){
+  localStorage.setItem("flight", flight);
+  window.location.href = "summary.html";
+}
+
+// LOAD
+document.addEventListener("DOMContentLoaded", () => {
+
+  const trip = JSON.parse(localStorage.getItem("trip"));
+  const container = document.getElementById("flightsContainer");
+
+  const flights = [
+    "IndiGo","Air India","Vistara","SpiceJet","Akasa",
+    "AirAsia","Emirates","Qatar Airways","Etihad","Go First"
+  ];
+
+  container.innerHTML = flights.map(name => {
+
+    const price = Math.floor(Math.random() * 5000 + 3000);
+    const stops = Math.random() > 0.5 ? "direct" : "1stop";
+
+    return `
+      <div class="flight-card"
+        data-price="${price}"
+        data-stops="${stops}"
+        data-airline="${name.toLowerCase()}">
+
+        <div class="flight-info">
+          <h3>${name}</h3>
+          <p>${trip.from} → ${trip.to}</p>
+          <span>${stops === "direct" ? "Direct" : "1 Stop"}</span>
+        </div>
+
+        <div class="flight-price">
+          <h2>₹${price}</h2>
+          <button onclick="selectFlight('${name} ₹${price}')">Select</button>
+        </div>
+
+      </div>
+    `;
+  }).join("");
+
+  initFilters();
+});
+
+// 🔥 COMBINED FILTER + SEARCH
+function initFilters(){
+
+  const priceRange = document.getElementById("priceRange");
+  const priceValue = document.getElementById("priceValue");
+  const searchInput = document.getElementById("flightSearch");
+
+  priceRange.addEventListener("input", () => {
+    priceValue.innerText = priceRange.value;
+    applyFilters();
+  });
+
+  document.getElementById("direct").addEventListener("change", applyFilters);
+  document.getElementById("onestop").addEventListener("change", applyFilters);
+
+  document.querySelectorAll(".airline")
+    .forEach(cb => cb.addEventListener("change", applyFilters));
+
+  searchInput.addEventListener("input", applyFilters);
+}
+
+// 🔥 MAIN LOGIC (FILTER + SEARCH TOGETHER)
+function applyFilters(){
+
+  const maxPrice = parseInt(document.getElementById("priceRange").value);
+  const direct = document.getElementById("direct").checked;
+  const onestop = document.getElementById("onestop").checked;
+  const search = document.getElementById("flightSearch").value.toLowerCase();
+
+  const selectedAirlines = Array.from(document.querySelectorAll(".airline"))
+    .filter(cb => cb.checked)
+    .map(cb => cb.value);
+
+  document.querySelectorAll(".flight-card").forEach(card => {
+
+    const price = parseInt(card.dataset.price);
+    const stops = card.dataset.stops;
+    const airline = card.dataset.airline;
+
+    let show = true;
+
+    if(price > maxPrice) show = false;
+    if(direct && stops !== "direct") show = false;
+    if(onestop && stops !== "1stop") show = false;
+
+    if(selectedAirlines.length && !selectedAirlines.includes(airline)) show = false;
+    if(search && !airline.includes(search)) show = false;
+
+    card.style.display = show ? "flex" : "none";
+  });
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SmartTrip</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar">
+
+  <div class="logo">SmartTrip</div>
+
+  <!-- HAMBURGER (mobile) -->
+  <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+
+  <nav class="nav-links" id="navLinks">
+    <a href="index.html">Home</a>
+    <a href="planner.html">Planner</a>
+    <a href="booking.html">Flights</a>
+    <a href="hotels.html">Hotels</a>
+    <a href="vr.html">VR</a>
+    <a href="ar.html">AR</a>
+    <a href="summary.html">Summary</a>
+  </nav>
+
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <h1>Millions of cheap flights.<br>One simple search.</h1>
+
+    <!-- TABS -->
+    <div class="tabs">
+      <button class="active">Flights</button>
+      <button>Hotels</button>
+      <button>Cars</button>
+    </div>
+
+    <!-- SEARCH BAR -->
+    <div class="search-container">
+
+      <div class="input-box">
+        <label>From</label>
+        <input id="from" placeholder="Ahmedabad">
+      </div>
+
+      <div class="input-box">
+        <label>To</label>
+        <input id="to" placeholder="Mumbai">
+      </div>
+
+      <div class="input-box">
+        <label>Depart</label>
+        <input id="depart" type="date">
+      </div>
+
+      <div class="input-box">
+        <label>Return</label>
+        <input id="return" type="date">
+      </div>
+
+      <div class="input-box">
+        <label>Travellers</label>
+        <select id="travelers">
+          <option>1 Adult, Economy</option>
+          <option>2 Adults, Economy</option>
+        </select>
+      </div>
+
+    <button onclick="searchFlights()">Search</button>
+    </div>
+
+    <!-- OPTIONS -->
+    <div class="options">
+      <label><input type="checkbox"> Direct flights</label>
+      <label><input type="checkbox"> Add nearby airports</label>
+      <label><input type="checkbox"> Add hotel</label>
+    </div>
+
+  </div>
+</section>
+
+<!-- QUICK CARDS -->
+<section class="destinations-section">
+
+  <h2>Explore top destinations</h2>
+
+  <div class="destinations-grid">
+
+    <!-- CARD -->
+    <div class="destination-card">
+      <div class="destination-img">
+        <img src="https://content.skyscnr.com/m/fe0aae1ac5d477ea/original/sync_206568682_2024_BenA_Bangkok_ChaoprayaRiverCruise_27536671_3989.jpg">
+      </div>
+
+      <div class="destination-content">
+        <h3>Bangkok</h3>
+        <p>Thailand</p>
+
+        <div class="destination-info">
+          <span>Thu, 11 Jun</span>
+          <span>Direct</span>
+        </div>
+
+        <div class="price">from ₹19,528</div>
+      </div>
+    </div>
+
+    <div class="destination-card">
+      <div class="destination-img">
+        <img src="https://content.skyscnr.com/dc3bc489366201fb1350f7537bf039cd/stock-photo-sunrise-view-in-kuala-lumpur-city-centre-102472231.jpg">
+      </div>
+
+      <div class="destination-content">
+        <h3>Kuala Lumpur</h3>
+        <p>Malaysia</p>
+
+        <div class="destination-info">
+          <span>Mon, 1 Jun</span>
+          <span>Direct</span>
+        </div>
+
+        <div class="price">from ₹19,751</div>
+      </div>
+    </div>
+
+    <div class="destination-card">
+      <div class="destination-img">
+        <img src="https://content.skyscnr.com/m/34b1fa8843e83657/original/GettyImages-485972972.jpg">
+      </div>
+
+      <div class="destination-content">
+        <h3>Singapore</h3>
+        <p>Singapore</p>
+
+        <div class="destination-info">
+          <span>Sun, 28 Jun</span>
+          <span>Direct</span>
+        </div>
+
+        <div class="price">from ₹21,000</div>
+      </div>
+    </div>
+
+    <div class="destination-card">
+    <div class="destination-img">
+      <img src="https://content.skyscnr.com/89752adf383cb4193b53df7bb2635ded/GettyImages-477327968.jpg">
+    </div>
+    <div class="destination-content">
+      <h3>Dubai</h3>
+      <p>UAE</p>
+      <div class="destination-info">
+        <span>Fri, 20 Jun</span>
+        <span>Direct</span>
+      </div>
+      <div class="price">from ₹22,500</div>
+    </div>
+  </div>
+
+  <div class="destination-card">
+    <div class="destination-img">
+      <img src="data:image/jpeg;base64,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">
+    </div>
+    <div class="destination-content">
+      <h3>Paris</h3>
+      <p>France</p>
+      <div class="destination-info">
+        <span>Sat, 25 Jun</span>
+        <span>Direct</span>
+      </div>
+      <div class="price">from ₹48,000</div>
+    </div>
+  </div>
+
+  </div>
+
+</section>
+
+<!-- PROMO SECTION -->
+<section class="promo">
+  <div class="promo-text">
+    <h2>Airspace closure affecting your flight?</h2>
+    <p>Here's what to do next.</p>
+    <button>Read our guide</button>
+  </div>
+
+  <div class="promo-img"></div>
+</section>
+
+<!-- FLIGHTS LIST -->
+<section class="routes-section">
+
+  <h2>Popular routes right now</h2>
+
+  <div class="routes-grid">
+
+    <!-- CARD -->
+    <div class="route-card">
+      <div class="route-img">
+        <img src="AdobeStock_264584185-scaled.jpeg">
+      </div>
+
+      <div class="route-content">
+        <h3>Ahmedabad → Delhi</h3>
+        <p>From ₹4,200 • 2h 10m</p>
+        <button>View Flights</button>
+      </div>
+    </div>
+
+    <div class="route-card">
+      <div class="route-img">
+        <img src="6362166797_88d84af6f8_b-1.jpg">
+      </div>
+
+      <div class="route-content">
+        <h3>Mumbai → Dubai</h3>
+        <p>From ₹12,500 • 3h 30m</p>
+        <button>View Flights</button>
+      </div>
+    </div>
+
+    <div class="route-card">
+      <div class="route-img">
+        <img src="london.avif">
+      </div>
+
+      <div class="route-content">
+        <h3>Delhi → London</h3>
+        <p>From ₹45,000 • 9h</p>
+        <button>View Flights</button>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- EXPLORE -->
+<section class="explore-section">
+
+  <h2>Start planning your adventure</h2>
+
+  <div class="explore-grid">
+
+    <div class="explore-card">✈️ Tickets to Tokyo</div>
+    <div class="explore-card">🌍 Return tickets to London</div>
+    <div class="explore-card">🏨 Cheap hotels in Bangkok</div>
+    <div class="explore-card">✈️ Flights to New York</div>
+    <div class="explore-card">🚗 Car hire in Dubai</div>
+    <div class="explore-card">🏨 Hotels in Goa</div>
+
+  </div>
+
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <p>© 2026 SmartTrip</p>
+</footer>
+
+<script src="js/app.js"></script>
+</body>
+</html>
