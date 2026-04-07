@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>SmartTrip</title>
   <link rel="stylesheet" href="css/style.css">
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>
 </head>
 <body>
 
@@ -44,12 +45,12 @@
 
       <div class="input-box">
         <label>From</label>
-        <input id="from" placeholder="Ahmedabad">
+       <input type="text" id="from" placeholder="from">
       </div>
 
       <div class="input-box">
         <label>To</label>
-        <input id="to" placeholder="Mumbai">
+        <input type="text" id="to" placeholder="to">
       </div>
 
       <div class="input-box">
@@ -262,5 +263,61 @@
 </footer>
 
 <script src="js/app.js"></script>
+<script src="js/app.js"></script>
+
+<script>
+const cities = [
+  "Dubai","Paris","London","New York","Tokyo",
+  "Singapore","Bangkok","Maldives","Goa","Delhi",
+  "Mumbai","Bangalore","Pune","Kuala Lumpur","Bali",
+  "Ahmedabad","Jaipur","Chennai","Hyderabad","Kolkata"
+];
+
+function setupAutocomplete(inputId){
+
+  const input = document.getElementById(inputId);
+
+  const box = document.createElement("div");
+  box.className = "autocomplete-box";
+
+  input.parentElement.appendChild(box);
+
+  input.addEventListener("input", () => {
+
+    const value = input.value.toLowerCase();
+    box.innerHTML = "";
+
+    if(value === "") return;
+
+    const filtered = cities.filter(c =>
+      c.toLowerCase().includes(value)
+    );
+
+    filtered.forEach(city => {
+      const div = document.createElement("div");
+      div.textContent = city;
+
+      div.onclick = () => {
+        input.value = city;
+        box.innerHTML = "";
+      };
+
+      box.appendChild(div);
+    });
+
+  });
+
+  document.addEventListener("click", (e) => {
+    if(!input.contains(e.target)){
+      box.innerHTML = "";
+    }
+  });
+}
+
+window.onload = () => {
+  setupAutocomplete("from");
+  setupAutocomplete("to");
+};
+</script>
 </body>
 </html>
